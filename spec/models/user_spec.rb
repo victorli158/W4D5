@@ -10,6 +10,8 @@ RSpec.describe User, type: :model do
   it { should validate_uniqueness_of(:email) }
   it { should validate_uniqueness_of(:session_token) }
 
+  it { should have_many(:goals) }
+
   describe 'class_methods' do
     describe '::find_by_credentials' do
       it 'finds a User given a correct email and password' do
