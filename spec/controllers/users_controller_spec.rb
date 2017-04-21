@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
   describe 'GET #show' do
     it 'renders the show template' do
-      get :show
+      get :show, params: { id: 1 }
       expect(response).to render_template(:show)
     end
   end
@@ -11,7 +11,7 @@ RSpec.describe UsersController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       before(:each) do
-        post :create, user: { email: 'whatever@stuff.com', password: 'password' }
+        post :create, params: { user: { email: 'whatever@stuff.com', password: 'password' } }
       end
       it 'creates a new user' do
         expect(User.last.email).to eq('whatever@stuff.com')
@@ -23,17 +23,17 @@ RSpec.describe UsersController, type: :controller do
 
     context 'with invalid params' do
       it 'validates the presence of email' do
-        post :create, user: { password: 'password' }
+        post :create, params: { user: { password: 'password' } }
         expect(response).to redirect_to(new_user_url)
         expect(flash[:errors]).to be_present
       end
       it 'validates the presence of password' do
-        post :create, user: { email: 'whatever@stuff.com' }
+        post :create, params: { user: { email: 'whatever@stuff.com' } }
         expect(response).to redirect_to(new_user_url)
         expect(flash[:errors]).to be_present
       end
       it 'validates that the password is at least 6 characters long' do
-        post :create, user: { email: 'whatever@stuff.com', password: 'pass' }
+        post :create, params: { user: { email: 'whatever@stuff.com', password: 'pass' } }
         expect(response).to redirect_to(new_user_url)
         expect(flash[:errors]).to be_present
       end
